@@ -1,9 +1,9 @@
 # coreos-k8s
 k8s cluster on coreos
 
-This is configuration for manual installation
+#This is configuration for manual installation
 
-certs:
+#certs:
 https://coreos.com/kubernetes/docs/latest/openssl.html
 
 1) install on disk using config for particular node
