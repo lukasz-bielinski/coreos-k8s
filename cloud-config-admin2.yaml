@@ -1,0 +1,417 @@
+#cloud-config
+
+users:
+  - name: "pulse"
+    passwd: "$1$uJtnCKfA$2OtlB4ERE4s28V4zTGkHX1"
+    groups:
+      - "sudo"
+      - "docker"
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDQUXNzcjM0HcJskEzZ0cH8yVH0BWXXWgBfoIgf/QC+0UQ9B7YUrH0ehi7dfMZdA0c1DiD895TbQiZNGW+pul83MN9VwqA8fAR6NsIVXFmWcqXVbykz2MkwZhYlDndYAet0fUAIojbfOMdi8nhllEJr+2ET294bpvxsUfBh6SXidqj7Y9QA2lVhyRdMpGc5y3D4CnQ1HonINfMQRoU/fZ/80R61NnG0zmIfJRFuV3TN5xVeIpQpGKqbT+kOCjSjvZkff4yopT1lSPl/l5Pv+II2lC0YgOkc9/OJ5pzxN94pri3Rc+8a2uzXIDiDKxELoGujtV/3UduajUuUPbYnHqCN pulse@Archlinux
+
+hostname: "192.168.1.171"
+manage_etc_hosts: "localhost"
+
+
+
+
+write_files:
+  - path: /etc/motd.d/pi.conf
+    content: This machine is dedicated to computing Pi
+  - path: /etc/systemd/timesyncd.conf
+    content: |
+      [Time]
+      NTP=tempus1.gum.gov.pl tempus2.gum.gov.pl
+  - path: /etc/kubernetes/ssl/ca.pem
+    permissions: 0600
+    owner: root
+    content: |
+      -----BEGIN CERTIFICATE-----
+      MIIC9zCCAd+gAwIBAgIJAPbPcKBMArtEMA0GCSqGSIb3DQEBCwUAMBIxEDAOBgNV
+      BAMMB2t1YmUtY2EwHhcNMTYwMzI3MjIxMDE3WhcNNDMwODEzMjIxMDE3WjASMRAw
+      DgYDVQQDDAdrdWJlLWNhMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA
+      xDuSGSSZH4KSBocWDhcjwW9SxS5KNfOrYTTk8bf+fvxcFQBla1RdnVbjlh9HOUjT
+      MFHyx7/cwSwdpvE4Fwv/8lPzkhg/cAOWcs/ln+H3xMIykVcmWH5YhwCkAgjlqwLn
+      k75t3HJPf4NB+DOgy8lVNbgBSKlwcEU4xErA7OnZtL31ehHscVHP20gvqsci/f75
+      sLr3+8tPdlJqJQRlOL2hVeo3+AtRu08BN2F3HX0Q3Yoy3pD9IYvV8lACJ0jUP4cW
+      0A1N3ArJybag3gNC9cAaz4hp3SpoD6k60AVEbikRCH+zZpc4qzm9MC6CXbqbzbSB
+      HaV38m9U7z62wZfoFs53FwIDAQABo1AwTjAdBgNVHQ4EFgQUH2g6VpOQiNOD4XB5
+      VqxWySrxEsQwHwYDVR0jBBgwFoAUH2g6VpOQiNOD4XB5VqxWySrxEsQwDAYDVR0T
+      BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAR17x0aCXYgVGDhqnpN0ORGot7FfI
+      jtTOkj1pOcShO0d13vZWqpqPwz2WbzwYpz1E8R0fxhYheD4Z3HeqBXziidTyow2k
+      olhUJ7yEKtk1C6QzS+HHdoW91hthtuCG1LHaZpXXDqxQ+vsuF7QcLndQKz9ktFmC
+      QZr0gq30KYSAVStHnYJQ+efgV8NhkgZRqqm6Kc+sEqe0iosmcOlqB+2qGS7PA5Lk
+      a5HNGqYW4xwuh8WJG33u4V8jDwsw97c4gGRr6/Po7HYrcAeMsNw0wqoxGNQXQFaR
+      uHeWJNg6tBFXg/I9JDfwMgI8aWz9DItVauXxHU7qYrDlX1nwRQ0V+WkNqw==
+      -----END CERTIFICATE-----
+  - path: /etc/kubernetes/ssl/apiserver.pem
+    permissions: 0600
+    owner: root
+    content: |
+       -----BEGIN CERTIFICATE-----
+       MIIDUjCCAjqgAwIBAgIJAP6vF6YfV4kCMA0GCSqGSIb3DQEBCwUAMBIxEDAOBgNV
+       BAMMB2t1YmUtY2EwHhcNMTYwMzI3MjIxMDUyWhcNMTcwMzI3MjIxMDUyWjAZMRcw
+       FQYDVQQDDA5rdWJlLWFwaXNlcnZlcjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
+       AQoCggEBALcaHG/F74RKLzRvOBhs6dxYXizoJOFz58zO1MbOc8bS0z6xnqoNZVwK
+       eqmeYJM+L4YKRiurkxEU1t4s+BpluujSFWlRKtItak6m7t36angaGVeqTouNLsFN
+       mVCmSi2DoAeIr8SOHOR4jUnDpLWYhn6a/7Wm5Ys+UHRveuZ6syBk+BKWuNZWMfYo
+       54TIkKtD8Igsc3kfx4x7SXs/XoEEqnR1yXdyN0DI0w5uZfZy5FGkLR9rOdjwUFBM
+       sT56J2+E8ZeIE3v+dE6SvIUeRLJJWLP6E+0g3xLmGYjIdGMxDWZKqfGzLPF5OOOh
+       spU6PAvKpMfyjsMMXNHk7IhOC2Q42IcCAwEAAaOBozCBoDAJBgNVHRMEAjAAMAsG
+       A1UdDwQEAwIF4DCBhQYDVR0RBH4wfIIKa3ViZXJuZXRlc4ISa3ViZXJuZXRlcy5k
+       ZWZhdWx0ghZrdWJlcm5ldGVzLmRlZmF1bHQuc3ZjgiRrdWJlcm5ldGVzLmRlZmF1
+       bHQuc3ZjLmNsdXN0ZXIubG9jYWyHBAoDAAGHBMCoAaqHBMCoAauHBMCoAayHBMCo
+       AYwwDQYJKoZIhvcNAQELBQADggEBAI1nvIT2HuYfmDwyGvPSVzE7ZXcWgwikSt3V
+       XreQRL44jAEAUwVm6WA5NTfEs7/mdfP8nrpibs6ZTP4ED+zMuH97aGS5EepFxU1L
+       6vebnnPSH3jvO65wE7eFF+/qxhSOvWbNPcomh29wztuipIjSLwYeFqAgDN7rD4yB
+       v7DAJ9vM6Xojihclg2Lr0Y/vgsy+euL3+bmqlxjgbZplyf5452o0ZNcHg8TmAOia
+       cMCCDRaDRmDs+tUYQf8KqrIy1SpHWvDj9WX6Z39Bip96eH2yOef9u5VVKZn7O3r0
+       M507DPGpHRFF4NhJYLWgaLxRw19W/sx9R/qu0FNBLQSWYIu6Ios=
+       -----END CERTIFICATE-----
+
+  - path: /etc/kubernetes/ssl/apiserver-key.pem
+    permissions: 0600
+    owner: root
+    content: |
+       -----BEGIN RSA PRIVATE KEY-----
+       MIIEowIBAAKCAQEAtxocb8XvhEovNG84GGzp3FheLOgk4XPnzM7Uxs5zxtLTPrGe
+       qg1lXAp6qZ5gkz4vhgpGK6uTERTW3iz4GmW66NIVaVEq0i1qTqbu3fpqeBoZV6pO
+       i40uwU2ZUKZKLYOgB4ivxI4c5HiNScOktZiGfpr/tabliz5QdG965nqzIGT4Epa4
+       1lYx9ijnhMiQq0PwiCxzeR/HjHtJez9egQSqdHXJd3I3QMjTDm5l9nLkUaQtH2s5
+       2PBQUEyxPnonb4Txl4gTe/50TpK8hR5EsklYs/oT7SDfEuYZiMh0YzENZkqp8bMs
+       8Xk446GylTo8C8qkx/KOwwxc0eTsiE4LZDjYhwIDAQABAoIBACd0fvAu7L/K5IUd
+       +i55OaN7fz+Z/mh+e1KMtxjn39bWEyMNTy1BmbfNokTulczkt4TgreI3JIenv+08
+       L3IwvafxrR92mA2WL7QnEI3QqiSbKx7S2f4EPDD3MbRJQO6x0EgPUiC+pscsmvVs
+       LQ/cgA7EA5n3DruEf/23D/qeMf8mpT0QFwYxzuWiFAX127Z8KbVSsxdDZO7I2MpV
+       ML9af2cN5RazgWTIL7Ouq6xj0KMKvf/qWXrqvhDi77P4A49ebNxjBbDAUbXTuC9s
+       BeqKcIFt9s1Qd3IvJuGhpJsz02rOSFUuvvkBi4R2ylmB0Cn/QRb08fI18IHBgFbG
+       pIXeYWECgYEA5c5KGjdaDXg6EuUMlTmAvV0NpqUg2JQZmCqJR2hEmWecSwooqE9a
+       1yMcQGpHpUgFWyK6pqRY4jyuiOJH1t3i+/+Ql2vX0IIbz5oE5PbpR4mluXDoKH39
+       +5wFEfO+wwCwPDV0dqcPLrQbg6Me83EiHMqoOl3dbcy2fR3t74I5KkkCgYEAy/kC
+       Qg486Uv9z3BQdFBfmkCKN7W//YqtLyxGXhM3g8VLQs/kOPnigBvuyDTpR2Wl6E77
+       vlzeCbEhNec90PXzrNBrLKrs6akNo6ldOE/fDRIjehOsiSRJTG0rr+8qrL8fnFVV
+       FDJnWO6xmkr3QGnxBcGBIbBqYTG9Pm3pIZDObE8CgYAXMg5KvSGK0ILUG2h8u3Qi
+       KP1Sv8Ij+jbnJAv9OCoMbefZrynRa0kZBAM7AT9AEJfxzfyXC2mpVEStrmFf77+U
+       fgRDNHBxLGDQQJST49RCE0O2Bw5339e+CM5+NGMh3bTsLt0ViOFAbo+EZvedzOKL
+       k20NjyHljk8xK88zaKqKeQKBgHa9C2J2tWC+Ow9x+3Pqgezi21NY+13WR8DpTkFf
+       gHa1+Hz5VosQdJlNKXDk1FQayTz2FbiYiS0tLv8ZETQ+qU6VuX40NlxDbEw0wK6S
+       WG9cesiLAWqIdB8IgmEVoksTq4wvZKqwONddhIgkUdDumz9ViR2afCL+eIMKKqe+
+       i1wjAoGBALc5AraG/tV4RA7bmdeTEsohM3AMzh/ZJ8oAm7Q1hfxv59pED92IcUkF
+       f9UpK7r1OSgF5PmgBUbPT/KOn7tB6C8y/Fsj6qt4BWFYg2kDfrNDf73AJer4OGbS
+       tbVBuAUsCSnPj/tmo1L5FYlhKdGjBIV5QV5udTZ+SAzdG4WpdXl9
+       -----END RSA PRIVATE KEY-----
+
+  - path: /etc/kubernetes/manifests/kube-apiserver.yaml
+    content: |
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: kube-apiserver
+        namespace: kube-system
+      spec:
+        hostNetwork: true
+        containers:
+        - name: kube-apiserver
+          image: quay.io/coreos/hyperkube:v1.2.0_coreos.0
+          command:
+          - /hyperkube
+          - apiserver
+          - --bind-address=0.0.0.0
+          - --etcd-servers=http://192.168.1.170:2379,http://192.168.1.171:2379,http://192.168.1.172:2379
+          - --allow-privileged=true
+          - --service-cluster-ip-range=10.3.0.0/24
+          - --secure-port=443
+          - --advertise-address=192.168.1.171
+          - --admission-control=NamespaceLifecycle,NamespaceExists,LimitRanger,SecurityContextDeny,ServiceAccount,ResourceQuota
+          - --tls-cert-file=/etc/kubernetes/ssl/apiserver.pem
+          - --tls-private-key-file=/etc/kubernetes/ssl/apiserver-key.pem
+          - --client-ca-file=/etc/kubernetes/ssl/ca.pem
+          - --service-account-key-file=/etc/kubernetes/ssl/apiserver-key.pem
+          ports:
+          - containerPort: 443
+            hostPort: 443
+            name: https
+          - containerPort: 8080
+            hostPort: 8080
+            name: local
+          volumeMounts:
+          - mountPath: /etc/kubernetes/ssl
+            name: ssl-certs-kubernetes
+            readOnly: true
+          - mountPath: /etc/ssl/certs
+            name: ssl-certs-host
+            readOnly: true
+        volumes:
+        - hostPath:
+            path: /etc/kubernetes/ssl
+          name: ssl-certs-kubernetes
+        - hostPath:
+            path: /usr/share/ca-certificates
+          name: ssl-certs-host
+  - path: /etc/kubernetes/manifests/kube-proxy.yaml
+    content: |
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: kube-proxy
+        namespace: kube-system
+      spec:
+        hostNetwork: true
+        containers:
+        - name: kube-proxy
+          image: quay.io/coreos/hyperkube:v1.2.0_coreos.0
+          command:
+          - /hyperkube
+          - proxy
+          - --master=http://127.0.0.1:8080
+          - --proxy-mode=iptables
+          securityContext:
+            privileged: true
+          volumeMounts:
+          - mountPath: /etc/ssl/certs
+            name: ssl-certs-host
+            readOnly: true
+        volumes:
+        - hostPath:
+            path: /usr/share/ca-certificates
+          name: ssl-certs-host
+  - path: /etc/kubernetes/manifests/kube-podmaster.yaml
+    content: |
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: kube-podmaster
+        namespace: kube-system
+      spec:
+        hostNetwork: true
+        containers:
+        - name: scheduler-elector
+          image: gcr.io/google_containers/podmaster:1.1
+          command:
+          - /podmaster
+          - --etcd-servers=http://192.168.1.170:2379,http://192.168.1.171:2379,http://192.168.1.172:2379
+          - --key=scheduler
+          - --whoami=192.168.1.171
+          - --source-file=/src/manifests/kube-scheduler.yaml
+          - --dest-file=/dst/manifests/kube-scheduler.yaml
+          volumeMounts:
+          - mountPath: /src/manifests
+            name: manifest-src
+            readOnly: true
+          - mountPath: /dst/manifests
+            name: manifest-dst
+        - name: controller-manager-elector
+          image: gcr.io/google_containers/podmaster:1.1
+          command:
+          - /podmaster
+          - --etcd-servers=http://192.168.1.170:2379,http://192.168.1.171:2379,http://192.168.1.172:2379
+          - --key=controller
+          - --whoami=192.168.1.171
+          - --source-file=/src/manifests/kube-controller-manager.yaml
+          - --dest-file=/dst/manifests/kube-controller-manager.yaml
+          terminationMessagePath: /dev/termination-log
+          volumeMounts:
+          - mountPath: /src/manifests
+            name: manifest-src
+            readOnly: true
+          - mountPath: /dst/manifests
+            name: manifest-dst
+        volumes:
+        - hostPath:
+            path: /srv/kubernetes/manifests
+          name: manifest-src
+        - hostPath:
+            path: /etc/kubernetes/manifests
+          name: manifest-dst
+  - path: /srv/kubernetes/manifests/kube-controller-manager.yaml
+    content: |
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: kube-controller-manager
+        namespace: kube-system
+      spec:
+        hostNetwork: true
+        containers:
+        - name: kube-controller-manager
+          image: quay.io/coreos/hyperkube:v1.2.0_coreos.0
+          command:
+          - /hyperkube
+          - controller-manager
+          - --master=http://127.0.0.1:8080
+          - --service-account-private-key-file=/etc/kubernetes/ssl/apiserver-key.pem
+          - --root-ca-file=/etc/kubernetes/ssl/ca.pem
+          livenessProbe:
+            httpGet:
+              host: 127.0.0.1
+              path: /healthz
+              port: 10252
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+          volumeMounts:
+          - mountPath: /etc/kubernetes/ssl
+            name: ssl-certs-kubernetes
+            readOnly: true
+          - mountPath: /etc/ssl/certs
+            name: ssl-certs-host
+            readOnly: true
+        volumes:
+        - hostPath:
+            path: /etc/kubernetes/ssl
+          name: ssl-certs-kubernetes
+        - hostPath:
+            path: /usr/share/ca-certificates
+          name: ssl-certs-host
+  - path: /srv/kubernetes/manifests/kube-scheduler.yaml
+    content: |
+      apiVersion: v1
+      kind: Pod
+      metadata:
+        name: kube-scheduler
+        namespace: kube-system
+      spec:
+        hostNetwork: true
+        containers:
+        - name: kube-scheduler
+          image: quay.io/coreos/hyperkube:v1.2.0_coreos.0
+          command:
+          - /hyperkube
+          - scheduler
+          - --master=http://127.0.0.1:8080
+          livenessProbe:
+            httpGet:
+              host: 127.0.0.1
+              path: /healthz
+              port: 10251
+            initialDelaySeconds: 15
+            timeoutSeconds: 1
+  - path: /etc/modprobe.d/bonding.conf
+    content: |
+      # Prevent kernel from automatically creating bond0 when the module is loaded.
+      # This allows systemd-networkd to create and apply options to bond0.
+      options bonding max_bonds=0
+  - path: /etc/systemd/network/10-eth.network
+    permissions: 0644
+    owner: root
+    content: |
+      [Match]
+      Name=eth*
+
+      [Network]
+      Bond=bond0
+  - path: /etc/systemd/network/20-bond.netdev
+    permissions: 0644
+    owner: root
+    content: |
+      [NetDev]
+      Name=bond0
+      Kind=bond
+
+      [Bond]
+      Mode=4 # defaults to balance-rr
+      MIIMonitorSec=100
+  - path: /etc/systemd/network/30-bond-static.network
+    permissions: 0644
+    owner: root
+    content: |
+      [Match]
+      Name=bond0
+
+      [Network]
+      DNS=8.8.8.8
+      Address=192.168.1.171/24
+      Gateway=192.168.1.1
+coreos:
+  units:
+    - name: down-interfaces.service
+      command: start
+      content: |
+        [Service]
+        Type=oneshot
+        ExecStart=/usr/bin/ip link set eth0 down
+        ExecStart=/usr/bin/ip addr flush dev eth0
+        ExecStart=/usr/bin/ip link set eth1 down
+        ExecStart=/usr/bin/ip addr flush dev eth1
+    - name: systemd-networkd.service
+      command: restart
+
+coreos:
+  units:
+    - name: settimezone.service
+      command: start
+      content: |
+        [Unit]
+        Description=Set the time zone
+
+        [Service]
+        ExecStart=/usr/bin/timedatectl set-timezone Europe/Warsaw
+        RemainAfterExit=yes
+        Type=oneshot
+
+coreos:
+  locksmith:
+      endpoint: http://192.168.1.170:2379,http://192.168.1.171:2379,http://192.168.1.172:2379
+
+coreos:
+  update:
+    reboot-strategy: "best-effort"
+    reboot-window-start: Mon 10:00
+    reboot-window-legth: 6h
+    reboot-window-start: Tue 10:00
+    reboot-window-legth: 6h
+    reboot-window-start: Wed 10:00
+    reboot-window-legth: 6h
+    reboot-window-start: Thu 10:00
+    reboot-window-legth: 6h
+    reboot-window-start: Fri 10:00
+    reboot-window-legth: 6h
+
+
+coreos:
+  etcd2:
+    advertise-client-urls: http://192.168.1.171:2379
+    initial-advertise-peer-urls: http://192.168.1.171:2380
+    listen-client-urls: http://192.168.1.171:2379,http://127.0.0.1:2379
+    listen-peer-urls: http://192.168.1.171:2380
+    initial-cluster-token: etcd-cluster-1
+    initial-cluster: infra0=http://192.168.1.170:2380,infra1=http://192.168.1.171:2380,infra2=http://192.168.1.172:2380
+    initial-cluster-state: new
+    name: infra1
+  units:
+    - name: etcd2.service
+      command: start
+    - name: fleet.service
+      command: start
+    - name: flanneld.service
+      command: start
+      drop-ins:
+      - name: 50-network-config.conf
+        content: |
+          [Service]
+          ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network":"10.1.0.0/16", "Backend": {"Type": "vxlan"}}'
+    - name: docker.service
+      command: start
+      drop-ins:
+      - name: 40-flannel.conf
+        content: |
+          [Unit]
+          Requires=flanneld.service
+          After=flanneld.service
+    - name: kubelet.service
+      command: start
+      content: |
+        [Service]
+        ExecStartPre=/usr/bin/mkdir -p /etc/kubernetes/manifests
+        Environment=KUBELET_VERSION=v1.2.0_coreos.0
+        ExecStart=/usr/lib/coreos/kubelet-wrapper \
+        --api-servers=http://127.0.0.1:8080 \
+        --register-node=false \
+        --allow-privileged=true \
+        --config=/etc/kubernetes/manifests \
+        --hostname-override=192.168.1.171 \
+        --cluster-dns=192.168.1.1 \
+        --cluster-domain=cluster.local
+        Restart=always
+        RestartSec=10
+        [Install]
+        WantedBy=multi-user.target
