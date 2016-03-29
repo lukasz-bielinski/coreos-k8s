@@ -25,6 +25,6 @@ curl -H "Content-Type: application/json" -XPOST -d'{"apiVersion":"v1","kind":"Na
 1. encrypted connections between etcd instances
 2. encrypted flanneld
 3. encrypted fleet, lochsmithd
-4. conformannce tests, now issue with version https://github.com/coreos/coreos-kubernetes/issues/364
+4. conformannce tests, now issue with version https://github.com/coreos/coreos-kubernetes/issues/364 #364
 
 #####Config succesfully tested on VM(kvm+libvirt)
