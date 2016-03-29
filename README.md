@@ -18,7 +18,7 @@ This is configuration for manual installation using cloud-init
 2. set up loadbalancer for api(haproxy.cfg)
 
   ```
-  docker run -d -p 443:443 -v /path/to/coreosconfig/haproxy.cfg:/etc/haproxy/haproxy.cfg million12/haproxy
+  docker run -d -p 443:443 -v /path/to/haproxy.cfg:/etc/haproxy/haproxy.cfg million12/haproxy
   ```
 3. create flannel network in etcd: 
   
