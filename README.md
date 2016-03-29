@@ -38,5 +38,6 @@ curl -H "Content-Type: application/json" -XPOST -d'{"apiVersion":"v1","kind":"Na
 2. encrypted flanneld
 3. encrypted fleet, lochsmithd
 4. conformannce tests, now issue with version https://github.com/coreos/coreos-kubernetes/issues/364 
+5. build automatic provisioner, which uses rc,svc,secrets definition from git repo
 
 #####Config succesfully tested on VM(kvm+libvirt)
