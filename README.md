@@ -8,8 +8,7 @@ https://coreos.com/kubernetes/docs/latest/openssl.html
 
 1. install on disk using config for particular node
 2. set up loadbalancer for api(haproxy.cfg)
-3. create flannel network in etcd:
-```
+3. create flannel network in etcd: ```
 curl -X PUT -d "value={\"Network\":\"10.2.0.0/16\",\"Backend\":{\"Type\":\"vxlan\"}}" "192.168.1.170:2379/v2/keys/coreos.com/network/config"
 ```
 4. create kube-system namespace
