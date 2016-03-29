@@ -2,7 +2,7 @@
 k8s cluster on coreos
 
 
-This is configuration for manual installation
+This is configuration for manual installation using cloud-init
 
 
 ######certs:
@@ -11,7 +11,15 @@ This is configuration for manual installation
 
 ######Procedure:
 1. install on disk using config for particular node
+
+  ```
+  coreos-install -d /dev/vda -c cloud-config.yaml
+  ```
 2. set up loadbalancer for api(haproxy.cfg)
+
+  ```
+  docker run -d -p 443:443 -v /path/to/haproxy.cfg:/etc/haproxy/haproxy.cfg million12/haproxy
+  ```
 3. create flannel network in etcd: 
   
   ```
@@ -30,5 +38,6 @@ curl -H "Content-Type: application/json" -XPOST -d'{"apiVersion":"v1","kind":"Na
 2. encrypted flanneld
 3. encrypted fleet, lochsmithd
 4. conformannce tests, now issue with version https://github.com/coreos/coreos-kubernetes/issues/364 
+5. build automatic provisioner, which uses rc,svc,secrets definition from git repo
 
 #####Config succesfully tested on VM(kvm+libvirt)
