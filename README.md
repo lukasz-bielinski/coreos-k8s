@@ -14,6 +14,7 @@ curl -X PUT -d "value={\"Network\":\"10.2.0.0/16\",\"Backend\":{\"Type\":\"vxlan
 curl -H "Content-Type: application/json" -XPOST -d'{"apiVersion":"v1","kind":"Namespace","metadata":{"name":"kube-system"}}' "http://127.0.0.1:8080/api/v1/namespaces"
 5) setup kubectl https://coreos.com/kubernetes/docs/latest/configure-kubectl.html
 
+
 certs:
 https://coreos.com/kubernetes/docs/latest/openssl.html
 
@@ -22,3 +23,5 @@ TODO:
 2) encrypted flanneld
 3) encrypted fleet, lochsmithd
 4) conformannce tests, now issue with version https://github.com/coreos/coreos-kubernetes/issues/364
+
+Config succesfully tested on VM(kvm+libvirt)
