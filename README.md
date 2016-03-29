@@ -4,9 +4,13 @@ k8s cluster on coreos
 
 This is configuration for manual installation
 
-####certs:
+
+certs:
+1. 
 https://coreos.com/kubernetes/docs/latest/openssl.html
 
+
+Procedure:
 1. install on disk using config for particular node
 2. set up loadbalancer for api(haproxy.cfg)
 3. create flannel network in etcd: 
