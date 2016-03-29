@@ -17,7 +17,8 @@ manage_etc_hosts: "localhost"
 
 write_files:
   - path: /etc/motd.d/pi.conf
-    content: This machine is dedicated to computing Pi
+    content: |
+      TEST Motd
   - path: /etc/systemd/timesyncd.conf
     content: |
       [Time]
@@ -110,7 +111,7 @@ write_files:
         hostNetwork: true
         containers:
         - name: kube-proxy
-          image: quay.io/coreos/hyperkube:v1.2.0_coreos.0
+          image: quay.io/coreos/hyperkube:v1.2.0_coreos.1
           command:
           - /hyperkube
           - proxy
@@ -161,7 +162,7 @@ write_files:
   - path: /etc/flannel/options.env
     content: |
       FLANNELD_IFACE=192.168.1.175
-      FLANNELD_ETCD_ENDPOINTS=http://192.168.1.170:2379,http://192.168.1.171:2379,http://192.168.1.172:2379
+      FLANNELD_ETCD_ENDPOINTS=http://192.168.1.170:2379,http://192.168.1.171:2379,http://192.168.1.172:2379,http://192.168.1.175:2379,http://192.168.1.176:2379
   - path: /etc/modprobe.d/bonding.conf
     content: |
       # Prevent kernel from automatically creating bond0 when the module is loaded.
@@ -229,34 +230,35 @@ coreos:
 
 coreos:
   locksmith:
-      endpoint: http://192.168.1.170:2379,http://192.168.1.171:2379,http://192.168.1.172:2379
+      endpoint: http://192.168.1.170:2379,http://192.168.1.171:2379,http://192.168.1.172:2379,http://192.168.1.175:2379,http://192.168.1.176:2379
 
 coreos:
   update:
     reboot-strategy: "best-effort"
-    reboot-window-start: Mon 10:00
-    reboot-window-legth: 6h
-    reboot-window-start: Tue 10:00
-    reboot-window-legth: 6h
-    reboot-window-start: Wed 10:00
-    reboot-window-legth: 6h
-    reboot-window-start: Thu 10:00
-    reboot-window-legth: 6h
-    reboot-window-start: Fri 10:00
-    reboot-window-legth: 6h
+
 
 coreos:
+  etcd2:
+    advertise-client-urls: http://192.168.1.175:2379
+    initial-advertise-peer-urls: http://192.168.1.175:2380
+    listen-client-urls: http://192.168.1.175:2379,http://127.0.0.1:2379
+    listen-peer-urls: http://192.168.1.175:2380
+    initial-cluster-token: etcd-cluster-1
+    initial-cluster: infra0=http://192.168.1.170:2380,infra1=http://192.168.1.171:2380,infra2=http://192.168.1.172:2380,infra5=http://192.168.1.175:2380,infra6=http://192.168.1.176:2380
+    initial-cluster-state: new
+    name: infra5
   units:
+    - name: etcd2.service
+      command: start
     - name: fleet.service
       command: start
     - name: flanneld.service
       command: start
       drop-ins:
-      - name: 40-ExecStartPre-symlink.conf
+      - name: 50-network-config.conf
         content: |
           [Service]
-          ExecStartPre=/usr/bin/ln -sf /etc/flannel/options.env /run/flannel/options.env
-
+          ExecStartPre=/usr/bin/etcdctl set /coreos.com/network/config '{"Network":"10.1.0.0/16", "Backend": {"Type": "vxlan"}}'
     - name: docker.service
       command: start
       drop-ins:
@@ -271,7 +273,7 @@ coreos:
         [Service]
         ExecStartPre=/usr/bin/mkdir -p /etc/kubernetes/manifests
 
-        Environment=KUBELET_VERSION=v1.2.0_coreos.0
+        Environment=KUBELET_VERSION=v1.2.0_coreos.1
         ExecStart=/usr/lib/coreos/kubelet-wrapper \
           --api-servers=https://192.168.1.140 \
           --register-node=true \
