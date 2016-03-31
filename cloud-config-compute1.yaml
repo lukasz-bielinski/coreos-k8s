@@ -280,7 +280,7 @@ coreos:
           --allow-privileged=true \
           --config=/etc/kubernetes/manifests \
           --hostname-override=192.168.1.175 \
-          --cluster-dns=192.168.1.1 \
+          --cluster-dns=10.3.0.10 \
           --cluster-domain=cluster.local \
           --kubeconfig=/etc/kubernetes/worker-kubeconfig.yaml \
           --tls-cert-file=/etc/kubernetes/ssl/worker.pem \
